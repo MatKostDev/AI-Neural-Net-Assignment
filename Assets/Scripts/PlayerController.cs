@@ -25,12 +25,15 @@ public class PlayerController : MonoBehaviour
 		m_speed = startSpeed;
 
 		//calculate velocity needed in order to reach desired jump height
-		m_jumpVelocity = Mathf.Sqrt(jumpHeight * 2f * m_rigidbody.gravityScale * Physics.gravity.y);
+		m_jumpVelocity = Mathf.Sqrt(Mathf.Abs(jumpHeight * 2f * m_rigidbody.gravityScale * Physics.gravity.y));
 	}
 	
     private void Update()
-    {
-	    m_rigidbody.velocity = m_speed * Vector2.right;
+	{
+		Vector2 newVelocity = m_rigidbody.velocity;
+		newVelocity.x = m_speed;
+
+		m_rigidbody.velocity = newVelocity;
 
 	    if (Input.GetKeyDown(KeyCode.Space))
 	    {
@@ -45,7 +48,7 @@ public class PlayerController : MonoBehaviour
 		    return;
 	    }
 	    
-	    Vector3 newVelocity = m_rigidbody.velocity;
+	    Vector2 newVelocity = m_rigidbody.velocity;
 	    newVelocity.y = m_jumpVelocity;
 
 	    m_rigidbody.velocity = newVelocity;
