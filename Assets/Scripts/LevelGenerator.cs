@@ -14,16 +14,15 @@ public class LevelGenerator : MonoBehaviour
 	private GameObject obstaclePrefab = null;
 
 	[SerializeField]
-	private float groundHeight = -50f;
-
-	[SerializeField]
-	private float obstacleHeight = -28.7f;
+	private float distanceBetweenObstacles = 15f;
 
 	[SerializeField]
 	private List<GameObject> groundObjects = new List<GameObject>();
 
 	[SerializeField]
 	private List<GameObject> obstacleObjects = new List<GameObject>();
+
+	private float m_lastObstacleDistance;
 
 	private void Awake()
     {
@@ -32,6 +31,12 @@ public class LevelGenerator : MonoBehaviour
 
     private void Update()
     {
+	    //spawn new obstacle if player travelled the distance between obstacles
+	    if (player.transform.position.x - m_lastObstacleDistance > distanceBetweenObstacles)
+	    {
+		    AddObstacle();
+	    }
+	    
 	    //spawn new ground if player is past the last ground piece
 	    if (player.transform.position.x > groundObjects[groundObjects.Count - 1].transform.position.x)
 	    {
@@ -59,9 +64,21 @@ public class LevelGenerator : MonoBehaviour
 
     private void AddObstacle()
     {
-	    if (obstacleObjects.Count > 5)
+	    m_lastObstacleDistance = player.transform.position.x; //set new distance for tracking
+	    
+	    Transform lastTransform = obstacleObjects[obstacleObjects.Count - 1].transform;
+
+	    //create a new obstacle based on desired distance
+	    Vector3 newPosition = lastTransform.position + new Vector3(distanceBetweenObstacles, 0f, 0f);
+
+		//create new obstacle and add it to the list
+		obstacleObjects.Add(Instantiate(obstaclePrefab, newPosition, Quaternion.identity, lastTransform.parent));
+
+	    //destroy old, no longer needed obstacles to free up memory space
+	    if (obstacleObjects.Count > 4)
 	    {
 		    Destroy(obstacleObjects[0]);
-	    }
+		    obstacleObjects.RemoveAt(0);
+		}
     }
 }

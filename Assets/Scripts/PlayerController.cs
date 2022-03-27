@@ -8,6 +8,9 @@ public class PlayerController : MonoBehaviour
 	private float startSpeed = 5f;
 
 	[SerializeField]
+	private float speedUpRate = 0.5f;
+
+	[SerializeField]
 	private float jumpHeight = 2f;
 
 	private float m_speed;
@@ -44,7 +47,10 @@ public class PlayerController : MonoBehaviour
 	}
 	
     private void Update()
-	{
+    {
+	    //accelerate over time
+	    m_speed += speedUpRate * Time.deltaTime;
+		
 		//set updated velocity based on speed increase
 		Vector2 newVelocity = m_rigidbody.velocity;
 		newVelocity.x = m_speed;
