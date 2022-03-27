@@ -32,6 +32,7 @@ public class LevelGenerator : MonoBehaviour
 
     private void Update()
     {
+	    //spawn new ground if player is past the last ground piece
 	    if (player.transform.position.x > groundObjects[groundObjects.Count - 1].transform.position.x)
 	    {
 		    AddGround();
@@ -41,13 +42,14 @@ public class LevelGenerator : MonoBehaviour
     private void AddGround()
     {
 	    Transform lastTransform = groundObjects[groundObjects.Count - 1].transform;
-
-	    const float offset = 0.2f;
 	    
-	    Vector3 newPosition = lastTransform.position + new Vector3(lastTransform.localScale.x - offset, 0f, 0f);
+	    //create a new ground object at the end of the current one (pivot is object center, so scale works)
+	    Vector3 newPosition = lastTransform.position + new Vector3(lastTransform.localScale.x, 0f, 0f);
 
+	    //create new ground and add it to the list
 	    groundObjects.Add(Instantiate(groundPrefab, newPosition, Quaternion.identity, lastTransform.parent));
 
+	    //destroy old, no longer needed ground pieces to free up memory space
 		if (groundObjects.Count > 2)
 	    {
 		    Destroy(groundObjects[0]);
