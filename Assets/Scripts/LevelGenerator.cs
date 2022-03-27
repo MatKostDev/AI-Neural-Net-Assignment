@@ -51,6 +51,7 @@ public class LevelGenerator : MonoBehaviour
 		if (groundObjects.Count > 2)
 	    {
 		    Destroy(groundObjects[0]);
+		    groundObjects.RemoveAt(0);
 	    }
     }
 
