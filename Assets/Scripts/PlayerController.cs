@@ -18,6 +18,18 @@ public class PlayerController : MonoBehaviour
 
 	private bool m_isGrounded = true;
 
+	private float m_startPositionX;
+
+	public float CurrentSpeed
+	{
+		get => m_speed;
+	}
+
+	public float DistanceTravelled
+	{
+		get => transform.position.x - m_startPositionX;
+	}
+
 	private void Awake()
 	{
 		m_rigidbody = GetComponent<Rigidbody2D>();
@@ -26,6 +38,8 @@ public class PlayerController : MonoBehaviour
 
 		//calculate velocity needed in order to reach desired jump height
 		m_jumpVelocity = Mathf.Sqrt(Mathf.Abs(jumpHeight * 2f * m_rigidbody.gravityScale * Physics.gravity.y));
+
+		m_startPositionX = transform.position.x;
 	}
 	
     private void Update()
@@ -54,6 +68,11 @@ public class PlayerController : MonoBehaviour
 	    m_rigidbody.velocity = newVelocity;
 
 	    m_isGrounded = false;
+    }
+
+    private void OnTriggerEnter2D(Collider2D a_other)
+    {
+	    Debug.Log("dedded");
     }
 
     private void OnCollisionEnter2D(Collision2D a_collision)
