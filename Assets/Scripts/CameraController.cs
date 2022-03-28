@@ -3,19 +3,25 @@
 class CameraController : MonoBehaviour
 {
 	[SerializeField]
-	private Transform playerTransform = null;
+	private float startOffsetX = 23.5f;
 
-	private float startOffsetX;
+	private PlayerPopulation m_population;
 
-	private void Awake()
+	private void Start()
 	{
-		startOffsetX = transform.position.x - playerTransform.position.x;
+		m_population = FindObjectOfType<PlayerPopulation>();
 	}
 
 	private void LateUpdate()
 	{
+		var player = m_population.LivePlayer;
+		if (!player)
+		{
+			return;
+		}
+
 		Vector3 newPosition = transform.position;
-		newPosition.x = playerTransform.position.x + startOffsetX;
+		newPosition.x = player.transform.position.x + startOffsetX;
 
 		transform.position = newPosition;
 	}

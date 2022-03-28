@@ -5,9 +5,6 @@ using UnityEngine;
 public class LevelGenerator : MonoBehaviour
 {
 	[SerializeField]
-	private PlayerController player = null;
-	
-	[SerializeField]
 	private GameObject groundPrefab = null;
 	
     [SerializeField]
@@ -24,21 +21,31 @@ public class LevelGenerator : MonoBehaviour
 
 	private float m_lastObstacleDistance;
 
-	private void Awake()
-    {
-        
-    }
+	private PlayerPopulation m_population;
+
+	private void Start()
+	{
+		m_population = FindObjectOfType<PlayerPopulation>();
+	}
 
     private void Update()
     {
-	    //spawn new obstacle if player travelled the distance between obstacles
-	    if (player.transform.position.x - m_lastObstacleDistance > distanceBetweenObstacles)
+	    PlayerController player = m_population.LivePlayer;
+	    if (!player)
 	    {
-		    AddObstacle();
+		    return;
+	    }
+
+	    float playerPositionX = player.transform.position.x;
+
+		//spawn new obstacle if player travelled the distance between obstacles
+		if (playerPositionX - m_lastObstacleDistance > distanceBetweenObstacles)
+	    {
+		    AddObstacle(playerPositionX);
 	    }
 	    
 	    //spawn new ground if player is past the last ground piece
-	    if (player.transform.position.x > groundObjects[groundObjects.Count - 1].transform.position.x)
+	    if (playerPositionX > groundObjects[groundObjects.Count - 1].transform.position.x)
 	    {
 		    AddGround();
 	    }
@@ -62,9 +69,9 @@ public class LevelGenerator : MonoBehaviour
 	    }
     }
 
-    private void AddObstacle()
+    private void AddObstacle(float a_playerPositionX)
     {
-	    m_lastObstacleDistance = player.transform.position.x; //set new distance for tracking
+	    m_lastObstacleDistance = a_playerPositionX; //set new distance for tracking
 	    
 	    Transform lastTransform = obstacleObjects[obstacleObjects.Count - 1].transform;
 
@@ -75,7 +82,7 @@ public class LevelGenerator : MonoBehaviour
 		obstacleObjects.Add(Instantiate(obstaclePrefab, newPosition, Quaternion.identity, lastTransform.parent));
 
 	    //destroy old, no longer needed obstacles to free up memory space
-	    if (obstacleObjects.Count > 4)
+	    if (obstacleObjects.Count > 3)
 	    {
 		    Destroy(obstacleObjects[0]);
 		    obstacleObjects.RemoveAt(0);

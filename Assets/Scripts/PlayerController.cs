@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerController : MonoBehaviour
 {
+	public UnityAction<PlayerController> onDie;
+	
 	[SerializeField]
 	private float startSpeed = 5f;
 
@@ -23,9 +26,16 @@ public class PlayerController : MonoBehaviour
 
 	private float m_startPositionX;
 
+	private bool m_isDead = false;
+
 	public float CurrentSpeed
 	{
 		get => m_speed;
+	}
+
+	public bool IsDead
+	{
+		get => m_isDead;
 	}
 
 	public float DistanceTravelled
@@ -48,6 +58,11 @@ public class PlayerController : MonoBehaviour
 	
     private void Update()
     {
+	    if (m_isDead)
+	    {
+		    return;
+	    }
+	    
 	    //accelerate over time
 	    m_speed += speedUpRate * Time.deltaTime;
 		
@@ -58,10 +73,10 @@ public class PlayerController : MonoBehaviour
 		m_rigidbody.velocity = newVelocity;
 
 		//check for jump
-	    if (Input.GetKeyDown(KeyCode.Space))
-	    {
-		    Jump();
-	    }
+	    //if (Input.GetKeyDown(KeyCode.Space))
+	    //{
+		   // Jump();
+	    //}
     }
 
     private void Jump()
@@ -84,7 +99,7 @@ public class PlayerController : MonoBehaviour
     //triggers are used for obstacles
     private void OnTriggerEnter2D(Collider2D a_other)
     {
-	    Debug.Log("dedded");
+	    Die();
     }
 
     private void OnCollisionEnter2D(Collision2D a_collision)
@@ -101,5 +116,20 @@ public class PlayerController : MonoBehaviour
 		}
 
 		m_isGrounded = true;
-    }
+	}
+
+	private void Die()
+	{
+		Debug.Log("dedded");
+		m_isDead = true;
+
+		Destroy(m_rigidbody);
+
+		onDie?.Invoke(this);
+	}
+
+	public float GetScore()
+	{
+		return DistanceTravelled * DistanceTravelled;
+	}
 }
