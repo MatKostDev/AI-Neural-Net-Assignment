@@ -99,7 +99,7 @@ MonoBehaviour:
   startSpeed: 8
   speedUpRate: 0.8
   jumpHeight: 7
-  mutationProbability: 0.2
+  mutationProbability: 0.8
   minTimeBetweenJumps: 0.5
 --- !u!61 &5438330538101467383
 BoxCollider2D:
