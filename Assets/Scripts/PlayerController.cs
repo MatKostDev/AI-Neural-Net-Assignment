@@ -6,6 +6,10 @@ using UnityEngine.Events;
 public class PlayerController : MonoBehaviour
 {
 	public UnityAction<PlayerController> onDie;
+
+	[SerializeField]
+	Animator animator;
+
 	
 	[SerializeField]
 	private float startSpeed = 5f;
@@ -148,6 +152,10 @@ public class PlayerController : MonoBehaviour
 	    {
 		    return;
 	    }
+
+
+		//trigger animator
+		animator.SetTrigger("Jump");
 	    
 	    //add y velocity for jump
 	    Vector2 newVelocity = m_rigidbody.velocity;
