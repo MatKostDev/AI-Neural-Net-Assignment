@@ -7,8 +7,14 @@ public class StartGame : MonoBehaviour
 {
     private void Start()
     {
-	    //load gameplay scene immediately
+	    StartCoroutine(StartGameRoutine());
+    }
+
+    IEnumerator StartGameRoutine()
+    {
+	    //load gameplay scene after delay
 	    //entry scene is just for initializing player population manager
-        SceneManager.LoadScene("Gameplay");
+	    yield return new WaitForSeconds(2f);
+	    SceneManager.LoadScene("Gameplay");
     }
 }
