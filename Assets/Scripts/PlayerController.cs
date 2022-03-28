@@ -175,6 +175,6 @@ public class PlayerController : MonoBehaviour
 
 	public float GetScore()
 	{
-		return DistanceTravelled * DistanceTravelled * DistanceTravelled;
+		return DistanceTravelled * DistanceTravelled;
 	}
 }
