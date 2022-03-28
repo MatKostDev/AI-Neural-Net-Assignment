@@ -170,10 +170,7 @@ public class PlayerPopulation : MonoBehaviour
 			Vector3 newSpawnPosition = new Vector3(spawnPosition.x, spawnPosition.y, zPosition);
 
 			var newPlayer = Instantiate(playerPrefab, newSpawnPosition, Quaternion.identity);
-
-			//initialize values from parent and mutate it
-			newPlayer.InitAndMutateValues(timesList[i]);
-
+			
 			newPopulation.Add(newPlayer);
 
 			newPlayer.onDie += OnPlayerDie; //subscribe to die action
@@ -183,6 +180,9 @@ public class PlayerPopulation : MonoBehaviour
 				Mathf.Max(minMinTime, newPlayer.MinTimeBetweenJumps - (m_currentGeneration * minStep));
 			newPlayer.MaxTimeBetweenJumps =
 				Mathf.Max(minMaxTime, newPlayer.MaxTimeBetweenJumps - (m_currentGeneration * maxStep));
+
+			//initialize values from parent and mutate it
+			newPlayer.InitAndMutateValues(timesList[i]);
 
 			zPosition += 1f;
 		}
