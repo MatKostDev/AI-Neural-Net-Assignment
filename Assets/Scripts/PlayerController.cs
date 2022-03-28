@@ -16,6 +16,14 @@ public class PlayerController : MonoBehaviour
 	[SerializeField]
 	private float jumpHeight = 2f;
 
+	[SerializeField]
+	private float mutationProbability = 0.2f;
+
+	[SerializeField]
+	private float minTimeBetweenJumps = 0.5f;
+
+	private float maxTimeBetweenJumps = 5f;
+
 	private float m_speed;
 
 	private float m_jumpVelocity;
@@ -28,6 +36,17 @@ public class PlayerController : MonoBehaviour
 
 	private bool m_isDead = false;
 
+	private List<float> m_jumpTimes = new List<float>();
+
+	private int m_jumpIndex;
+
+	private float m_timeSinceJump;
+
+	public List<float> JumpTimes
+	{
+		get => m_jumpTimes;
+	}
+
 	public float CurrentSpeed
 	{
 		get => m_speed;
@@ -38,7 +57,7 @@ public class PlayerController : MonoBehaviour
 		get => m_isDead;
 	}
 
-	public float DistanceTravelled
+	private float DistanceTravelled
 	{
 		//get the total distance travelled (only x axis counts)
 		get => transform.position.x - m_startPositionX;
@@ -54,6 +73,8 @@ public class PlayerController : MonoBehaviour
 		m_jumpVelocity = Mathf.Sqrt(Mathf.Abs(jumpHeight * 2f * m_rigidbody.gravityScale * Physics.gravity.y));
 
 		m_startPositionX = transform.position.x; //set initial x position
+
+		m_jumpTimes.Add(DetermineJumpTime());
 	}
 	
     private void Update()
@@ -72,11 +93,27 @@ public class PlayerController : MonoBehaviour
 
 		m_rigidbody.velocity = newVelocity;
 
+		m_timeSinceJump += Time.deltaTime;
 		//check for jump
-	    //if (Input.GetKeyDown(KeyCode.Space))
-	    //{
-		   // Jump();
-	    //}
+		if (m_timeSinceJump > m_jumpTimes[m_jumpIndex])
+		{
+			Jump();
+		}
+    }
+
+    public void InitAndMutateValues(List<float> a_jumpTimes)
+    {
+	    m_jumpTimes = new List<float>(a_jumpTimes);
+	    
+	    if (Random.value > mutationProbability)
+	    {
+			m_jumpTimes[m_jumpTimes.Count - 1] = DetermineJumpTime();
+		}
+    }
+
+    private float DetermineJumpTime()
+    {
+	    return Random.Range(minTimeBetweenJumps, maxTimeBetweenJumps);
     }
 
     private void Jump()
@@ -94,6 +131,15 @@ public class PlayerController : MonoBehaviour
 	    m_rigidbody.velocity = newVelocity;
 
 	    m_isGrounded = false;
+
+	    m_jumpIndex++;
+	    
+		if (m_jumpIndex >= m_jumpTimes.Count)
+		{
+			m_jumpTimes.Add(DetermineJumpTime());
+		}
+
+		m_timeSinceJump = 0f;
     }
 
     //triggers are used for obstacles
@@ -120,7 +166,6 @@ public class PlayerController : MonoBehaviour
 
 	private void Die()
 	{
-		Debug.Log("dedded");
 		m_isDead = true;
 
 		Destroy(m_rigidbody);
