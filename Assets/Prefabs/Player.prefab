@@ -97,7 +97,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startSpeed: 8
-  speedUpRate: 0.8
+  speedUpRate: 1.2
   jumpHeight: 7
   mutationProbability: 0.8
   minTimeBetweenJumps: 0.5

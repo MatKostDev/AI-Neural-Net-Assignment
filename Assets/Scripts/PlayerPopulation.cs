@@ -51,14 +51,14 @@ public class PlayerPopulation : MonoBehaviour
 		
 		//update current score display
 		float currentScore = player.DistanceTravelled;
-		m_currentScoreDisplay.text = "Current Score: " + Mathf.FloorToInt(currentScore);
+		m_currentScoreDisplay.text = "Current Score: " + Mathf.CeilToInt(currentScore);
 
 		if (currentScore > m_bestScore)
 		{
 			//update high score and display
 			m_bestScore = currentScore;
 
-			m_highScoreDisplay.text = "High Score: " + Mathf.FloorToInt(m_bestScore);
+			m_highScoreDisplay.text = "High Score: " + Mathf.CeilToInt(m_bestScore);
 		}
 	}
 	
@@ -74,7 +74,7 @@ public class PlayerPopulation : MonoBehaviour
 		m_currentScoreDisplay = GameObject.FindGameObjectWithTag("CurrentScoreDisplay").GetComponent<TMP_Text>();
 		m_highScoreDisplay    = GameObject.FindGameObjectWithTag("HighScoreDisplay").GetComponent<TMP_Text>();
 
-		m_highScoreDisplay.text = "High Score: " + Mathf.FloorToInt(m_bestScore);
+		m_highScoreDisplay.text = "High Score: " + Mathf.CeilToInt(m_bestScore);
 
 		m_loadingDone = true;
 
