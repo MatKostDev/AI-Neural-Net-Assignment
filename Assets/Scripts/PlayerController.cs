@@ -57,7 +57,7 @@ public class PlayerController : MonoBehaviour
 		get => m_isDead;
 	}
 
-	private float DistanceTravelled
+	public float DistanceTravelled
 	{
 		//get the total distance travelled (only x axis counts)
 		get => transform.position.x - m_startPositionX;
@@ -175,6 +175,6 @@ public class PlayerController : MonoBehaviour
 
 	public float GetScore()
 	{
-		return DistanceTravelled * DistanceTravelled;
+		return DistanceTravelled * DistanceTravelled * DistanceTravelled;
 	}
 }

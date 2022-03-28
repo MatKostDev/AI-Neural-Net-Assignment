@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -13,6 +14,10 @@ public class PlayerPopulation : MonoBehaviour
 	
 	[SerializeField]
 	private int generationSize = 100;
+	
+	private TMP_Text m_generationDisplay;
+	private TMP_Text m_currentScoreDisplay;
+	private TMP_Text m_highScoreDisplay;
 
 	private int m_currentGeneration = 1;
 
@@ -22,6 +27,8 @@ public class PlayerPopulation : MonoBehaviour
 	private PlayerController m_lastAlive;
 
 	private bool m_loadingDone = false;
+
+	private float m_bestScore = 0f;
 
 	public PlayerController LivePlayer
 	{
@@ -33,6 +40,27 @@ public class PlayerPopulation : MonoBehaviour
 		DontDestroyOnLoad(gameObject); 
 		SceneManager.sceneLoaded += OnSceneLoaded;
 	}
+
+	private void Update()
+	{
+		var player = LivePlayer;
+		if (!player)
+		{
+			return;
+		}
+		
+		//update current score display
+		float currentScore = player.DistanceTravelled;
+		m_currentScoreDisplay.text = "Current Score: " + Mathf.FloorToInt(currentScore);
+
+		if (currentScore > m_bestScore)
+		{
+			//update high score and display
+			m_bestScore = currentScore;
+
+			m_highScoreDisplay.text = "High Score: " + Mathf.FloorToInt(m_bestScore);
+		}
+	}
 	
 	void OnSceneLoaded(Scene a_scene, LoadSceneMode a_mode)
 	{
@@ -40,6 +68,13 @@ public class PlayerPopulation : MonoBehaviour
 		{
 			return;
 		}
+
+		//find display objects after new scene load
+		m_generationDisplay   = GameObject.FindGameObjectWithTag("GenDisplay").GetComponent<TMP_Text>();
+		m_currentScoreDisplay = GameObject.FindGameObjectWithTag("CurrentScoreDisplay").GetComponent<TMP_Text>();
+		m_highScoreDisplay    = GameObject.FindGameObjectWithTag("HighScoreDisplay").GetComponent<TMP_Text>();
+
+		m_highScoreDisplay.text = "High Score: " + Mathf.FloorToInt(m_bestScore);
 
 		m_loadingDone = true;
 
@@ -100,6 +135,9 @@ public class PlayerPopulation : MonoBehaviour
 		//wait until level is done loading
 		yield return new WaitUntil(() => m_loadingDone);
 		yield return null;
+		
+		//update generation display
+		m_generationDisplay.text = "Gen: " + m_currentGeneration;
 
 		//create a new population
 		List<PlayerController> newPopulation = new List<PlayerController>(generationSize);
