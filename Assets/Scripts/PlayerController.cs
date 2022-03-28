@@ -104,8 +104,19 @@ public class PlayerController : MonoBehaviour
     public void InitAndMutateValues(List<float> a_jumpTimes)
     {
 	    m_jumpTimes = new List<float>(a_jumpTimes);
-	    
-	    if (Random.value > mutationProbability)
+
+	    //mutate jump times
+	    for (int i = 0; i < m_jumpTimes.Count; i++)
+	    {
+		    m_jumpTimes[i] += Random.Range(-0.1f, 0.1f);
+	    }
+
+	    //possibly more dramatic mutation for last indicies
+		if (Random.value > mutationProbability && m_jumpTimes.Count >= 2)
+		{
+			m_jumpTimes[m_jumpTimes.Count - 2] = DetermineJumpTime();
+		}
+		if (Random.value > mutationProbability)
 	    {
 			m_jumpTimes[m_jumpTimes.Count - 1] = DetermineJumpTime();
 		}
