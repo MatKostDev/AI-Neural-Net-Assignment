@@ -97,6 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87b81b9cb2ff67746844e4ecaea3bad9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 3744844528508205052}
   startSpeed: 8
   speedUpRate: 1.2
   jumpHeight: 7

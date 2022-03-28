@@ -6,6 +6,10 @@ using UnityEngine.Events;
 public class PlayerController : MonoBehaviour
 {
 	public UnityAction<PlayerController> onDie;
+
+	[SerializeField]
+	Animator animator;
+
 	
 	[SerializeField]
 	private float startSpeed = 5f;
@@ -126,11 +130,11 @@ public class PlayerController : MonoBehaviour
 	    }
 
 	    //possibly more dramatic mutation for last indicies
-		if (Random.value > mutationProbability && m_jumpTimes.Count >= 2)
+		if (Random.Range(0f, 1f) < mutationProbability && m_jumpTimes.Count >= 2)
 		{
 			m_jumpTimes[m_jumpTimes.Count - 2] = DetermineJumpTime();
 		}
-		if (Random.value > mutationProbability)
+		if (Random.Range(0f, 1f) < mutationProbability)
 	    {
 			m_jumpTimes[m_jumpTimes.Count - 1] = DetermineJumpTime();
 		}
@@ -148,6 +152,10 @@ public class PlayerController : MonoBehaviour
 	    {
 		    return;
 	    }
+
+
+		//trigger animator
+		animator.SetTrigger("Jump");
 	    
 	    //add y velocity for jump
 	    Vector2 newVelocity = m_rigidbody.velocity;
