@@ -511,9 +511,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_LookSpeedController: 120
   m_LookSpeedMouse: 10
-  m_MoveSpeed: 10
-  m_MoveSpeedIncrement: 2.5
-  m_Turbo: 10
+  m_MoveSpeed: 18
+  m_MoveSpeedIncrement: 3
+  m_Turbo: 5
 --- !u!1 &1575869036
 GameObject:
   m_ObjectHideFlags: 0
