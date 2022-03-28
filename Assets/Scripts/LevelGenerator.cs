@@ -25,6 +25,7 @@ public class LevelGenerator : MonoBehaviour
 
 	private void Start()
 	{
+		//use population to track player
 		m_population = FindObjectOfType<PlayerPopulation>();
 	}
 

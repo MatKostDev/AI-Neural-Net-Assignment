@@ -7,6 +7,15 @@ using UnityEngine.SceneManagement;
 
 using Random = UnityEngine.Random;
 
+/*
+ * Mathew Kostrzewa     Marcus Vine       Kristian Menes
+ *    100591924          100696597          100383679
+ * 
+ * AI for Games - Group Assignment
+ * Ontario Tech University
+ * Mar 28, 2022
+*/
+
 public class PlayerPopulation : MonoBehaviour
 {
 	[SerializeField]
@@ -40,6 +49,8 @@ public class PlayerPopulation : MonoBehaviour
 
 	private void Awake()
 	{
+		Application.targetFrameRate = 250;
+		
 		DontDestroyOnLoad(gameObject); 
 		SceneManager.sceneLoaded += OnSceneLoaded;
 	}
@@ -167,6 +178,7 @@ public class PlayerPopulation : MonoBehaviour
 		float zPosition = 1f;
 		for (int i = 0; i < timesList.Count; i++)
 		{
+			//spawn new player at spawn position
 			Vector3 newSpawnPosition = new Vector3(spawnPosition.x, spawnPosition.y, zPosition);
 
 			var newPlayer = Instantiate(playerPrefab, newSpawnPosition, Quaternion.identity);
