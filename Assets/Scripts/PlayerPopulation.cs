@@ -1,8 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
+using Random = UnityEngine.Random;
 
 public class PlayerPopulation : MonoBehaviour
 {
@@ -149,6 +152,16 @@ public class PlayerPopulation : MonoBehaviour
 		bestLastGen.JumpTimes = bestPerformance;
 		newPopulation.Add(bestLastGen);
 		bestLastGen.onDie += OnPlayerDie; //subscribe to die action
+		//set minmax speeds
+		const float minMinTime = 0.4f;
+		const float minMaxTime = 1.2f;
+		const float minStep    = 0.1f;
+		const float maxStep    = 0.35f;
+
+		bestLastGen.MinTimeBetweenJumps =
+			Mathf.Max(minMinTime, bestLastGen.MinTimeBetweenJumps - (m_currentGeneration * minStep));
+		bestLastGen.MaxTimeBetweenJumps =
+			Mathf.Max(minMaxTime, bestLastGen.MaxTimeBetweenJumps - (m_currentGeneration * maxStep));
 
 		//spawn new population
 		float zPosition = 1f;
@@ -164,6 +177,12 @@ public class PlayerPopulation : MonoBehaviour
 			newPopulation.Add(newPlayer);
 
 			newPlayer.onDie += OnPlayerDie; //subscribe to die action
+			
+			//set minmax speeds
+			newPlayer.MinTimeBetweenJumps =
+				Mathf.Max(minMinTime, newPlayer.MinTimeBetweenJumps - (m_currentGeneration * minStep));
+			newPlayer.MaxTimeBetweenJumps =
+				Mathf.Max(minMaxTime, newPlayer.MaxTimeBetweenJumps - (m_currentGeneration * maxStep));
 
 			zPosition += 1f;
 		}

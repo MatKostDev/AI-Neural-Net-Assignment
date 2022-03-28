@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
 	[SerializeField]
 	private float minTimeBetweenJumps = 0.5f;
 
+	[SerializeField]
 	private float maxTimeBetweenJumps = 5f;
 
 	private float m_speed;
@@ -56,6 +57,18 @@ public class PlayerController : MonoBehaviour
 	public bool IsDead
 	{
 		get => m_isDead;
+	}
+
+	public float MinTimeBetweenJumps
+	{
+		get => minTimeBetweenJumps;
+		set => minTimeBetweenJumps = value;
+	}
+
+	public float MaxTimeBetweenJumps
+	{
+		get => maxTimeBetweenJumps;
+		set => maxTimeBetweenJumps = value;
 	}
 
 	public float DistanceTravelled
