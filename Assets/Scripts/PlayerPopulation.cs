@@ -119,10 +119,10 @@ public class PlayerPopulation : MonoBehaviour
 
 		List<List<float>> timesList = new List<List<float>>();
 
-		//keep best performer of last generation
-		timesList.Add(m_lastAlive.JumpTimes);
+		//keep best performance of last generation
+		List<float> bestPerformance = m_lastAlive.JumpTimes;
 
-		for (int i = 1; i < generationSize; i++)
+		for (int i = 0; i < generationSize; i++)
 		{
 			//initialize values based on weighted random probability
 			timesList.Add(GetPlayerWeighted(scoreSum).JumpTimes);
@@ -146,13 +146,13 @@ public class PlayerPopulation : MonoBehaviour
 		var bestLastGen = Instantiate(playerPrefab, spawnPosition, Quaternion.identity);
 
 		//initialize values from parent and mutate it
-		bestLastGen.InitAndMutateValues(timesList[0]);
+		bestLastGen.JumpTimes = bestPerformance;
 		newPopulation.Add(bestLastGen);
 		bestLastGen.onDie += OnPlayerDie; //subscribe to die action
 
 		//spawn new population
 		float zPosition = 1f;
-		for (int i = 1; i < timesList.Count; i++)
+		for (int i = 0; i < timesList.Count; i++)
 		{
 			Vector3 newSpawnPosition = new Vector3(spawnPosition.x, spawnPosition.y, zPosition);
 

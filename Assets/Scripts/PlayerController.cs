@@ -45,6 +45,7 @@ public class PlayerController : MonoBehaviour
 	public List<float> JumpTimes
 	{
 		get => m_jumpTimes;
+		set => m_jumpTimes = value;
 	}
 
 	public float CurrentSpeed
